@@ -1,43 +1,44 @@
 document.addEventListener("DOMContentLoaded", function () {
   const productGrid = document.getElementById("product-grid");
-
+// funcion para cargar los productos
   function loadProducts() {
     fetch("https://fakestoreapi.com/products")
       .then((response) => response.json())
       .then((products) => {
+        //creando los elementos html para cada producto
         products.forEach((product) => {
           const productCard = document.createElement("div");
           productCard.classList.add("product-card");
-
-          const timerDuration = Math.floor(Math.random() * 2) + 2;
+        //creando los temporizadores e id de cada producto
+          const timerDuration = Math.floor(Math.random() * 3) + 1;
           const timerId = `timer-${product.id}`;
           const buyButtonId = `buy-${product.id}`;
-
+        // creando los elementos de cada card del producto
           productCard.innerHTML = `
-            <p class="category">Categoría: ${product.category}</p>
+            <b class="category">Categoría: ${product.category}</b>
             <img src="${product.image}" alt="${product.title}">
-            <h2>${product.title}</h2>
+            <h3>${product.title}</h3>
             <p class="description">${product.description.slice(0, 100)}...</p>
-            <p class="price">$${product.price}</p>
+            <p class="price">$ ${product.price}</p>
             <div class="timer" id="${timerId}">${timerDuration} minutos</div>
             <button class="buy-button" id="${buyButtonId}">Comprar</button>
             `;
 
-
-
+          //agregando cada card al grid de productos
           productGrid.appendChild(productCard);
-
+          // mostrando mensaje de compra al hacer click
           const button = document.getElementById(buyButtonId);
           button.addEventListener("click", () => {
-            alert("Comprado");
+            alert("Muchas gracias por su compra !!!");
           });
 
+          //iniciando el temporizador
           startTimer(timerDuration, buyButtonId);
         });
       })
       .catch((error) => console.error("Error al cargar los productos:", error));
   }
-
+  // funcion de temporizado de cada boton
   function startTimer(duration, buttonId) {
     let timer = duration * 60;
     const button = document.getElementById(buttonId);
@@ -59,6 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }, 1000);
   }
-
+  // cargando los productos
   loadProducts();
 });
